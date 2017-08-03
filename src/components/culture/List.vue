@@ -1,6 +1,6 @@
 <template>
     <div v-scroll-fixed>
-      <swiper :show-dots="true" @on-index-change="change">
+      <swiper :show-dots="true">
         <swiper-item v-for="item in banner" :key="item.id">
           <div class="custom-item">
             <img class="lazyload-image lg" v-lazy="item.img" />
@@ -31,7 +31,7 @@
         </div>
         <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner="waveDots">
           <span slot="no-results">
-            There is no more Hacker News :(
+            沒有更多的内容了!
           </span>
         </infinite-loading>
       </div>
@@ -166,6 +166,7 @@
     export default {
       data () {
         return {
+          id: 22,
           banner: [
             {
               img: require('../../assets/demo/1.jpg'),
@@ -210,51 +211,11 @@
               img: require('../../assets/demo/9.jpeg'),
               title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
               content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/10.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/11.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/12.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/13.png'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/14.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/15.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/16.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: 'http://p3.image.hiapk.com/uploads/allimg/130510/329-9877-L.jpg',
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
             }
           ],
           class_list: [
             {
-              id: 22,
+              id: 11,
               level_one: '给你好看',
               level_two: [
                 {
@@ -276,7 +237,7 @@
               ]
             },
             {
-              id: 33,
+              id: 22,
               level_one: '国家相册',
               level_two: []
             },
@@ -300,7 +261,21 @@
             }
           ],
           temp: [
-
+            {
+              img: require('../../assets/demo/10.jpeg'),
+              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+            },
+            {
+              img: require('../../assets/demo/11.jpeg'),
+              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+            },
+            {
+              img: require('../../assets/demo/12.jpeg'),
+              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+            },
           ]
         }
       },
@@ -316,32 +291,155 @@
                 temp.push(this.temp[i])
               }
               this.list = this.list.concat(this.temp);
+              var obj = {
+                  id: this.id,
+                  articles: this.temp
+              }
+              this.$store.commit('pushArticle', obj);
               this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
             }
           }, 1000);
         },
-        change (index) {
-          console.log(index);
-        },
         getClassId (id) {
-          console.log(id);
-          this.banner = [
-            {
-              img: require('../../assets/demo/1-1.jpg'),
-              title: ' 寻找旧时光——五一青岛小蜜月'
-            },
-            {
-              img: require('../../assets/demo/1-2.jpg'),
-              title: ' 寻找旧时光——五一青岛小蜜月'
+            var search,
+                companyClasses = this.$store.getters.getAllCompanyClasses;
+            this.id = id;
+            console.log(companyClasses[id])
+            if(companyClasses[id]) {
+                console.log("sadsa")
+              this.list = companyClasses[id].articles;
+              this.banner = companyClasses[id].banners;
+            }else {
+                console.log("沒有")
+              this.$store.commit('addCompanyClasses', {
+                id : id,
+                banners: [
+                  {
+                    img: require('../../assets/demo/1-1.jpg'),
+                    title: ' 寻找旧时光——五一青岛小蜜月'
+                  },
+                  {
+                    img: require('../../assets/demo/1-2.jpg'),
+                    title: ' 寻找旧时光——五一青岛小蜜月'
+                  }
+                ],
+                articles: [
+                  {
+                    img: require('../../assets/demo/13.png'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                  {
+                    img: require('../../assets/demo/14.jpeg'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                  {
+                    img: require('../../assets/demo/15.jpeg'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                  {
+                    img: require('../../assets/demo/13.png'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                  {
+                    img: require('../../assets/demo/14.jpeg'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                  {
+                    img: require('../../assets/demo/15.jpeg'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                  {
+                    img: require('../../assets/demo/13.png'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                  {
+                    img: require('../../assets/demo/14.jpeg'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                  {
+                    img: require('../../assets/demo/15.jpeg'),
+                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                  },
+                ]
+              });
+              this.list = [
+                {
+                  img: require('../../assets/demo/13.png'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+                {
+                  img: require('../../assets/demo/14.jpeg'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+                {
+                  img: require('../../assets/demo/15.jpeg'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+                {
+                  img: require('../../assets/demo/13.png'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+                {
+                  img: require('../../assets/demo/14.jpeg'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+                {
+                  img: require('../../assets/demo/15.jpeg'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+                {
+                  img: require('../../assets/demo/13.png'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+                {
+                  img: require('../../assets/demo/14.jpeg'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+                {
+                  img: require('../../assets/demo/15.jpeg'),
+                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+                },
+              ];
+              this.banner = [
+                {
+                  img: require('../../assets/demo/1-1.jpg'),
+                  title: ' 寻找旧时光——五一青岛小蜜月'
+                },
+                {
+                  img: require('../../assets/demo/1-2.jpg'),
+                  title: ' 寻找旧时光——五一青岛小蜜月'
+                }
+              ];
             }
-          ]
-        },
-        handler(component) {
-          console.log(component)
         }
       },
       mounted() {
-
+        var that = this;
+        setTimeout(function() {
+          that.$store.commit('addCompanyClasses', {
+            id : 22,
+            banners: that.banner,
+            articles: that.list
+          });
+        }, 1000);
       },
       directives: {
         scrollFixed: {

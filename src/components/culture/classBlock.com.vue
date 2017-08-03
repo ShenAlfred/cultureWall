@@ -102,10 +102,12 @@
             if(isChild) {
                 this.isHide = !this.isHide;
             }else {
+                document.body.scrollTop = 0
                 this.$emit('class-id', id);
             }
           },
           hideMenu(ev, id) {
+            document.body.scrollTop = 0
             this.isHide = !this.isHide;
             this.$emit('class-id', id);
           }

@@ -7,12 +7,25 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    companyClasses: {}
+  },
+  getters: {
+    getAllCompanyClasses (state) {
+      return state.companyClasses;
+    }
   },
   mutations: {
-    increment (state) {
-      state.count++
+    addCompanyClasses (state, obj) {
+      state.companyClasses[obj.id] = obj;
+    },
+    pushArticle (state, obj) {
+      for(var i=0; i<obj.articles.length; i++) {
+        state.companyClasses[obj.id].articles.push(obj.articles[i]);
+      }
     }
+  },
+  actions: {
+
   }
 })
 
