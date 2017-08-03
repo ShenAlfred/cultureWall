@@ -5,8 +5,14 @@ import App from './App'
 import axios from 'axios'
 import router from './router'
 import store from './store'
-import config from './config'
-import api from './api'
+import VueLazyLoad from 'vue-lazyload'
+
+Vue.use(VueLazyLoad, {
+  preLoad: 1,
+  attempt: 1,
+  loading: require('./assets/loading-spin.svg'),
+  error: require('./assets/404.png')
+})
 
 
 Vue.prototype.$ajax = axios

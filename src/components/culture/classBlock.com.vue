@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="class-i-i">
-      <div class="ci" v-on:click="cc($event, classList.id)">
+      <div class="ci" v-on:click="toggle($event, classList.id, classList.level_two.length)">
         <i v-if="classList.level_two.length" class="fa fa-bars"></i>
         <span>{{classList.level_one}}</span>
       </div>
       <div class="child-menu" v-if="classList.level_two.length" :class="{ hide: isHide }">
         <ul>
-          <li class="ellipsis" v-for="item in classList.level_two" v-on:click="cc($event, item.id)">
+          <li class="ellipsis" v-for="item in classList.level_two" v-on:click="hideMenu($event, item.id)">
             {{ item.title }}
           </li>
         </ul>
@@ -98,13 +98,16 @@
             'classList'
         ],
         methods: {
-          cc(ev, id) {
-            this.isHide = !this.isHide;
-            if(id) {
-              this.$emit('class-id', id);
+          toggle(ev, id, isChild) {
+            if(isChild) {
+                this.isHide = !this.isHide;
             }else {
-
+                this.$emit('class-id', id);
             }
+          },
+          hideMenu(ev, id) {
+            this.isHide = !this.isHide;
+            this.$emit('class-id', id);
           }
         },
         mounted() {
