@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="class-i-i">
-      <div class="ci" v-on:click="toggle($event, classList.id, classList.level_two.length)">
-        <i v-if="classList.level_two.length" class="fa fa-bars"></i>
-        <span>{{classList.level_one}}</span>
+      <div class="ci" v-on:click="toggle($event, classList.id, classList.children.length)">
+        <i v-if="classList.children.length" class="fa fa-bars"></i>
+        <span>{{classList.name}}</span>
       </div>
-      <div class="child-menu" v-if="classList.level_two.length" :class="{ hide: isHide }">
+      <div class="child-menu" v-if="classList.children.length" :class="{ hide: isHide }">
         <ul>
-          <li class="ellipsis" v-for="item in classList.level_two" v-on:click="hideMenu($event, item.id)">
-            {{ item.title }}
+          <li class="ellipsis" v-for="item in classList.children" v-on:click="hideMenu($event, item.id)">
+            {{ item.name }}
           </li>
         </ul>
       </div>
@@ -100,16 +100,16 @@
         methods: {
           toggle(ev, id, isChild) {
             if(isChild) {
-                this.isHide = !this.isHide;
+              this.isHide = !this.isHide;
             }else {
-                document.body.scrollTop = 0
-                this.$emit('class-id', id);
+              document.body.scrollTop = 0;
+              this.$emit('UrlAndId', id);
             }
           },
           hideMenu(ev, id) {
-            document.body.scrollTop = 0
+            document.body.scrollTop = 0;
             this.isHide = !this.isHide;
-            this.$emit('class-id', id);
+            this.$emit('UrlAndId', id);
           }
         },
         mounted() {

@@ -14,12 +14,12 @@ const routes = [
       component: resolve => require(['@/components/culture/List'], resolve)
     },
     {
-        path: '/cultureDetail',
-        name: 'cultureDetail',
-        meta: {
-            title: '文章详情',
-        },
-        component: resolve => require(['@/components/culture/Detail'], resolve)
+      path: '/:classId',
+      name: 'cultureListParams',
+      meta: {
+        title: '文章列表',
+      },
+      component: resolve => require(['@/components/culture/List'], resolve)
     },
     {
       path: '/cultureDetail/:cultureId',

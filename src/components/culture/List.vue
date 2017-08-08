@@ -1,23 +1,34 @@
 <template>
-    <div v-scroll-fixed>
-      <swiper :show-dots="true">
-        <swiper-item v-for="item in banner" :key="item.id">
-          <div class="custom-item">
-            <img class="lazyload-image lg" v-lazy="item.img" />
-            <p class="ellipsis">
-              {{item.title}}
-            </p>
-          </div>
-        </swiper-item>
-      </swiper>
-      <div class="class-title">
-        冰沁于心
+    <div>
+      <div v-if="banner.length">
+        <swiper :show-dots="true">
+          <swiper-item v-for="item in banner" :key="item.id">
+            <div class="custom-item" v-on:click="goTo(item.link, item.linkType)" v-if="item.linkType != 3">
+              <img class="lazyload-image lg" v-lazy="item.url" />
+              <p class="ellipsis">
+                {{item.title}}
+              </p>
+            </div>
+            <!-- 外部链接 -->
+            <div class="custom-item" v-if="item.linkType == 3">
+              <a :href="item.link">
+                <img class="lazyload-image lg" v-lazy="item.url" />
+                <p class="ellipsis">
+                  {{item.title}}
+                </p>
+              </a>
+            </div>
+          </swiper-item>
+        </swiper>
       </div>
+      <!--<div class="class-title">-->
+        <!--冰沁于心-->
+      <!--</div>-->
       <div class="article-list">
-        <div class="article-item" v-for="item in list">
+        <div class="article-item" v-for="item in list" v-on:click="goToDetail(item.id)">
           <flexbox>
-            <div class="art-img">
-                <img class="lazyload-image" v-lazy="item.img">
+            <div class="art-img" v-if="item.miniImgUrl">
+                <img class="lazyload-image" v-lazy="item.miniImgUrl">
             </div>
             <flexbox-item>
               <section class="ellipsis">
@@ -38,7 +49,7 @@
       <div class="class-ctrl">
         <flexbox style="height: 100%" :gutter="0">
           <flexbox-item class="class-item" v-for="item in class_list" :key="item.id">
-            <class-block :classList="item" v-on:class-id="getClassId"></class-block>
+            <class-block :classList="item" v-on:UrlAndId="getClassId"></class-block>
           </flexbox-item>
         </flexbox>
       </div>
@@ -161,105 +172,19 @@
 <script>
     import { Swiper, SwiperItem, Flexbox, FlexboxItem } from 'vux'
     import ClassBlock from './classBlock.com.vue'
+    import when from 'when'
     import InfiniteLoading from 'vue-infinite-loading';
+    import api from '../../api'
+    import config from '../../config'
 
     export default {
       data () {
         return {
-          id: 22,
-          banner: [
-            {
-              img: require('../../assets/demo/1.jpg'),
-              title: ' 柴文的地盘 | 误入梯田高山巅2'
-            },
-            {
-              img: require('../../assets/demo/2.jpg'),
-              title: ' 柴文的地盘 | 误入梯田高山巅2'
-            },
-            {
-              img: require('../../assets/demo/3.jpg'),
-              title: ' 柴文的地盘 | 误入梯田高山巅2'
-            }
-          ],
-          list : [
-            {
-                img: require('../../assets/demo/4.jpg'),
-                title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/5.jpg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/6.jpg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/7.jpg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/8.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/9.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            }
-          ],
-          class_list: [
-            {
-              id: 11,
-              level_one: '给你好看',
-              level_two: [
-                {
-                    id: 1,
-                    title: '2017年度颁奖盛典'
-                },
-                {
-                  id: 2,
-                  title: '2016年度颁奖盛典'
-                },
-                {
-                  id: 3,
-                  title: '2012年度颁奖盛典'
-                },
-                {
-                  id: 4,
-                  title: '2010年度颁奖盛典'
-                }
-              ]
-            },
-            {
-              id: 22,
-              level_one: '国家相册',
-              level_two: []
-            },
-            {
-              id: 44,
-              level_one: '活动',
-              level_two: [
-                {
-                  id: 1,
-                  title: '1997年度颁奖盛典'
-                },
-                {
-                  id: 2,
-                  title: '1998年度颁奖盛典'
-                },
-                {
-                  id: 3,
-                  title: '1999年度颁奖盛典'
-                }
-              ]
-            }
-          ],
+          id: 'Home',
+          pageNo: 1,
+          banner: [],
+          list : [],
+          class_list: [],
           temp: [
             {
               img: require('../../assets/demo/10.jpeg'),
@@ -280,31 +205,51 @@
         }
       },
       methods: {
+        /**
+         * 滚动加载
+         */
         onInfinite () {
-          setTimeout(() => {
-            const temp = [];
-            if(!this.temp.length) {
-              this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-            }
-            else {
-              for (let i = 0; i <= this.temp.length; i++) {
-                temp.push(this.temp[i])
+            this.pageNo = 1;
+            this.pageNo++;
+            this.getArticleList(this.pageNo).then((res) => {
+              if(!res.length) {
+                this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+              }else {
+                this.list = this.list.concat(res);
+                this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
               }
-              this.list = this.list.concat(this.temp);
-              var obj = {
-                  id: this.id,
-                  articles: this.temp
-              }
-              this.$store.commit('pushArticle', obj);
-              this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-            }
-          }, 1000);
+            });
+//          setTimeout(() => {
+//            const temp = [];
+//            if(!this.temp.length) {
+//              this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+//            }
+//            else {
+//              for (let i = 0; i <= this.temp.length; i++) {
+//                temp.push(this.temp[i])
+//              }
+//              this.list = this.list.concat(this.temp);
+//              var obj = {
+//                  id: this.id,
+//                  articles: this.temp
+//              }
+////              this.$store.commit('pushArticle', obj);
+//              this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+//            }
+//          }, 1000);
         },
-        getClassId (id) {
+        /**
+         * 监听子菜单对应的ID
+         */
+        getClassId (data) {
             var search,
                 companyClasses = this.$store.getters.getAllCompanyClasses;
-            this.id = id;
-            console.log(companyClasses[id])
+            this.id = data;
+            this.list = [];
+            this.$router.push({name: 'cultureListParams', params: {classId: data}});
+
+            return;
+
             if(companyClasses[id]) {
                 console.log("sadsa")
               this.list = companyClasses[id].articles;
@@ -317,10 +262,6 @@
                   {
                     img: require('../../assets/demo/1-1.jpg'),
                     title: ' 寻找旧时光——五一青岛小蜜月'
-                  },
-                  {
-                    img: require('../../assets/demo/1-2.jpg'),
-                    title: ' 寻找旧时光——五一青岛小蜜月'
                   }
                 ],
                 articles: [
@@ -328,47 +269,7 @@
                     img: require('../../assets/demo/13.png'),
                     title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
                     content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
-                  {
-                    img: require('../../assets/demo/14.jpeg'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
-                  {
-                    img: require('../../assets/demo/15.jpeg'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
-                  {
-                    img: require('../../assets/demo/13.png'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
-                  {
-                    img: require('../../assets/demo/14.jpeg'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
-                  {
-                    img: require('../../assets/demo/15.jpeg'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
-                  {
-                    img: require('../../assets/demo/13.png'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
-                  {
-                    img: require('../../assets/demo/14.jpeg'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
-                  {
-                    img: require('../../assets/demo/15.jpeg'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  },
+                  }
                 ]
               });
               this.list = [
@@ -376,85 +277,136 @@
                   img: require('../../assets/demo/13.png'),
                   title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
                   content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
-                {
-                  img: require('../../assets/demo/14.jpeg'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
-                {
-                  img: require('../../assets/demo/15.jpeg'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
-                {
-                  img: require('../../assets/demo/13.png'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
-                {
-                  img: require('../../assets/demo/14.jpeg'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
-                {
-                  img: require('../../assets/demo/15.jpeg'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
-                {
-                  img: require('../../assets/demo/13.png'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
-                {
-                  img: require('../../assets/demo/14.jpeg'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
-                {
-                  img: require('../../assets/demo/15.jpeg'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                },
+                }
               ];
               this.banner = [
                 {
                   img: require('../../assets/demo/1-1.jpg'),
                   title: ' 寻找旧时光——五一青岛小蜜月'
-                },
-                {
-                  img: require('../../assets/demo/1-2.jpg'),
-                  title: ' 寻找旧时光——五一青岛小蜜月'
                 }
               ];
             }
+        },
+        /**
+         * 获取菜单数据
+         */
+        getMenuData () {
+          this.$ajax.post(config.baseUrl + api.getArticleSort, {})
+            .then((res) => {
+              this.class_list = res.data.data;
+            })
+        },
+        /**
+         * 获取轮播图数据
+         */
+        getCarouselPictures (id) {
+          this.$ajax.post(config.baseUrl + api.getCarousel, {
+            articleTypeId: id ? id : ''
+          }).then((res) => {
+            //再对数据进行一层处理（主要处理图片的路径）
+            const handle_arr = [];
+            const data = res.data.data;
+            for(var i=0; i< data.length; i++) {
+                var handle = {};
+                handle['title'] = data[i].title;
+                handle['linkType'] = data[i].linkType;
+                handle['link'] = data[i].link;
+                handle['url'] = config.baseUrl + data[i].url;
+                handle_arr.push(handle);
+            }
+            this.banner = handle_arr;
+          })
+        },
+        /**
+         * Banner跳转
+         */
+        getArticleList (pageNo, id) {
+          var deferred = when.defer();
+          this.$ajax.post(config.baseUrl + api.getArticles, {
+            pageNo: pageNo,
+            pageSize: 10,
+            params: {
+              articleTypeId: id ? id : ''
+            }
+          }).then((res) => {
+            //再對數據進行一次處理
+            const data = res.data.data;
+            const handle_arr  = [];
+            for(var i=0; i<data.length; i++) {
+              var handle = {};
+              handle['id'] = data[i].id;
+              handle['title'] = data[i].title;
+              handle['content'] = data[i].content;
+              handle['miniImgUrl'] = config.baseUrl + data[i].miniImgUrl;
+              handle_arr.push(handle);
+            }
+            this.list = this.list.concat(handle_arr);
+            deferred.resolve(handle_arr);
+          })
+          return deferred.promise;
+        },
+        /**
+         * banner 跳转
+         * @param link          跳转内容
+         * @param linkType      如何跳转   0 无跳转  1 分类id   2  文章id   3  外部链接
+         */
+        goTo (link, linkType) {
+          var _link = link;
+          switch(linkType) {
+            case 0:
+                console.log("啥都没有");
+                break;
+            case 1:
+                this.list = [];
+                this.getCarouselPictures(parseInt(_link));
+                this.getArticleList(1, _link);
+                console.log("请求分类id");
+                break;
+            case 2:
+                alert("直接跳转文章详情");
+                break;
+            case 3:
+                alert("跳转外部链接");
+                break;
+          }
+        },
+        /**
+         * 跳转详情
+         * @param articleTypeId   文章ID
+         */
+        goToDetail (articleTypeId) {
+          this.$router.push( { name:'cultureDetail', params:{cultureId: articleTypeId}} );
         }
       },
       mounted() {
-        var that = this;
-        setTimeout(function() {
-          that.$store.commit('addCompanyClasses', {
-            id : 22,
-            banners: that.banner,
-            articles: that.list
-          });
-        }, 1000);
+        this.pageNo = 1;
+        this.getMenuData();
+        if(this.$route.params.classId) {
+          this.getCarouselPictures(this.$route.params.classId);
+          this.getArticleList(1, this.$route.params.classId);
+        }else {
+          this.getCarouselPictures();
+          this.getArticleList(1);
+        }
+//        setTimeout(function() {
+//          that.$store.commit('addCompanyClasses', {
+//            id : 22,
+//            banners: that.banner,
+//            articles: that.list
+//          });
+//        }, 1000);
+      },
+      watch: {
+        $route (to, from) {
+          this.list = [];
+          this.pageNo = 1;
+          console.log(to)
+          var id = to.params.classId;
+          this.getCarouselPictures(id);
+          this.getArticleList(1, id);
+        }
       },
       directives: {
-        scrollFixed: {
-          bind (el, binding, vnode) {
-            var fixed = el.querySelector(".class-title");
-            document.addEventListener('scroll', (ev) => {
-              var scroll = document.querySelector("body").scrollTop;
-              if(scroll >= 180) {
-                  fixed.classList.add('fixed');
-              }else {
-                  fixed.classList.remove('fixed');
-              }
-            });
-          }
-        }
       },
       components: {
         Swiper,

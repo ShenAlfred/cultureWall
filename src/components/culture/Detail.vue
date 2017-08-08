@@ -1,15 +1,16 @@
 <template>
     <div>
-        <h1 class="art-title">【把新西兰写进故事里】只看不一样的游记~"摄影视觉盛宴"</h1>
+        <h1 class="art-title">{{ detail.title }}</h1>
         <p class="art-tx">
-          发布人:&nbsp;斯卡迪
+          发布人:&nbsp;{{ detail.author ? detail.author: '无' }}
         </p>
         <p class="art-tx">
-          发布时间:&nbsp;2017-07-22 13:00
+          发布时间:&nbsp;&nbsp;{{ detail.updateTime }}
         </p>
-        <article>
-          html内容
-        </article>
+        <div class="coverImg" v-if="detail.showCover == 1" >
+          <img :src="detail.coverImgUrl" />
+        </div>
+        <article v-html="detail.content"></article>
     </div>
 </template>
 <style scoped>
@@ -26,12 +27,42 @@
     color: #666;
   }
   article {
-    margin-top: 20px;
     padding: 0 10px;
+  }
+  .coverImg {
+    width: 100%;
+    padding: 0 10px;
+  }
+  .coverImg img {
+    width: 100%;
+    max-width: 100%;
   }
 </style>
 <script>
-    export default {
+    import config from '../../config';
+    import api from '../../api';
+    import util from '../../util';
 
+    export default {
+      data () {
+        return {
+          detail: {}
+        }
+      },
+      mounted () {
+        const id = this.$route.params.cultureId;
+        this.$ajax.post(config.baseUrl + api.getArticleDetail, {
+          articleId: id
+        }).then((res) =>{
+          var handle = {};
+          handle['author'] = res.data.data.author;
+          handle['coverImgUrl'] = config.baseUrl + res.data.data.coverImgUrl;
+          handle['content'] = res.data.data.content;
+          handle['title'] = res.data.data.title;
+          handle['showCover'] = res.data.data.showCover;
+          handle['updateTime'] = util.handleTime(res.data.data.updateTime, 'yyyy-MM-dd h:mm');
+          this.detail = handle;
+        });
+      }
     }
 </script>

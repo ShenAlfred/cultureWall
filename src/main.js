@@ -15,7 +15,7 @@ Vue.use(VueLazyLoad, {
 })
 
 
-Vue.prototype.$ajax = axios
+Vue.prototype.$ajax = axios;
 
 //COOKIE凭据
 axios.defaults.withCredentials = true;

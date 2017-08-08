@@ -7,7 +7,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    companyClasses: {}
+    companyClasses: {},
+    companyBanners: {},
+    companyArticles: {}
   },
   getters: {
     getAllCompanyClasses (state) {
@@ -17,6 +19,12 @@ const store = new Vuex.Store({
   mutations: {
     addCompanyClasses (state, obj) {
       state.companyClasses[obj.id] = obj;
+    },
+    addCompanyArticles (state, obj) {
+      state.companyArticles[obj.id] = obj;
+    },
+    addCompanyBanners (state, obj) {
+      state.companyBanners[obj.id] = obj;
     },
     pushArticle (state, obj) {
       for(var i=0; i<obj.articles.length; i++) {
