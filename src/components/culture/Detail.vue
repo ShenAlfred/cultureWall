@@ -10,7 +10,7 @@
         <div class="coverImg" v-if="detail.showCover == 1" >
           <img :src="detail.coverImgUrl" />
         </div>
-        <article v-html="detail.content"></article>
+        <article id="article" v-html="detail.content"></article>
     </div>
 </template>
 <style scoped>
@@ -63,6 +63,15 @@
           handle['updateTime'] = util.handleTime(res.data.data.updateTime, 'yyyy-MM-dd h:mm');
           this.detail = handle;
         });
+        this.$nextTick(()=>{
+            var article = document.querySelector("#article");
+
+
+            setTimeout(function() {
+              var images = article.querySelectorAll('img');
+              console.log(images)
+            }, 2000)
+        })
       }
     }
 </script>

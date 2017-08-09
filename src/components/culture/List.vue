@@ -35,27 +35,51 @@
                 {{ item.title }}
               </section>
               <article class="simple-art mu-ellipsis">
-                {{ item.content }}
+                {{ item.abstractContent }}
               </article>
             </flexbox-item>
           </flexbox>
         </div>
         <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading" spinner="waveDots">
+          <span slot="no-more">
+            沒有更多的内容了!
+          </span>
           <span slot="no-results">
             沒有更多的内容了!
           </span>
         </infinite-loading>
       </div>
+      <!-- 底部菜单 -->
       <div class="class-ctrl">
         <flexbox style="height: 100%" :gutter="0">
           <flexbox-item class="class-item" v-for="item in class_list" :key="item.id">
-            <class-block :classList="item" v-on:UrlAndId="getClassId"></class-block>
+            <class-block :classList="item" v-on:UrlAndId="getClassId" :isShow="childMenuHide"></class-block>
           </flexbox-item>
         </flexbox>
+      </div>
+      <div class="backHome" v-show="!isHome">
+        <router-link :to="{path: '/'}">
+          <i class="fa fa-home fa-2x"></i>
+        </router-link>
       </div>
     </div>
 </template>
 <style scoped>
+  .backHome {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: #ff5454;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 62px;
+    color: #fff;
+    border-radius: 100%;
+  }
+  .backHome a {
+    color: #fff;
+  }
   .class-ctrl {
     position: fixed;
     bottom: 0;
@@ -114,7 +138,7 @@
   .article-item {
     position: relative;
     padding: 10px 0;
-    margin: 0 15px;
+    margin: 0 10px;
   }
   .article-item:before {
     content: '';
@@ -139,7 +163,7 @@
     color: #666;
   }
   .art-img {
-    background: #333;
+    background: #fff;
     width: 100px;
     height: 60px;
     overflow: hidden;
@@ -182,9 +206,11 @@
         return {
           id: 'Home',
           pageNo: 1,
+          childMenuHide: false,                            //隐藏子菜单
           banner: [],
           list : [],
           class_list: [],
+          isHome: true,
           temp: [
             {
               img: require('../../assets/demo/10.jpeg'),
@@ -209,16 +235,17 @@
          * 滚动加载
          */
         onInfinite () {
-            this.pageNo = 1;
-            this.pageNo++;
-            this.getArticleList(this.pageNo).then((res) => {
-              if(!res.length) {
-                this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-              }else {
-                this.list = this.list.concat(res);
-                this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-              }
-            });
+          this.pageNo++;
+          var classId = this.$route.params.classId ? parseInt(this.$route.params.classId) : "";
+          this.getArticleList(this.pageNo, classId).then((res) => {
+            const data = res.data.data;
+            if(!data.length) {
+              this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+            }else {
+              this.handleArticleListData(data);
+              this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+            }
+          });
 //          setTimeout(() => {
 //            const temp = [];
 //            if(!this.temp.length) {
@@ -242,50 +269,46 @@
          * 监听子菜单对应的ID
          */
         getClassId (data) {
-            var search,
-                companyClasses = this.$store.getters.getAllCompanyClasses;
             this.id = data;
             this.list = [];
             this.$router.push({name: 'cultureListParams', params: {classId: data}});
 
-            return;
-
-            if(companyClasses[id]) {
-                console.log("sadsa")
-              this.list = companyClasses[id].articles;
-              this.banner = companyClasses[id].banners;
-            }else {
-                console.log("沒有")
-              this.$store.commit('addCompanyClasses', {
-                id : id,
-                banners: [
-                  {
-                    img: require('../../assets/demo/1-1.jpg'),
-                    title: ' 寻找旧时光——五一青岛小蜜月'
-                  }
-                ],
-                articles: [
-                  {
-                    img: require('../../assets/demo/13.png'),
-                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                  }
-                ]
-              });
-              this.list = [
-                {
-                  img: require('../../assets/demo/13.png'),
-                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-                }
-              ];
-              this.banner = [
-                {
-                  img: require('../../assets/demo/1-1.jpg'),
-                  title: ' 寻找旧时光——五一青岛小蜜月'
-                }
-              ];
-            }
+//            if(companyClasses[id]) {
+//                console.log("sadsa")
+//              this.list = companyClasses[id].articles;
+//              this.banner = companyClasses[id].banners;
+//            }else {
+//                console.log("沒有")
+//              this.$store.commit('addCompanyClasses', {
+//                id : id,
+//                banners: [
+//                  {
+//                    img: require('../../assets/demo/1-1.jpg'),
+//                    title: ' 寻找旧时光——五一青岛小蜜月'
+//                  }
+//                ],
+//                articles: [
+//                  {
+//                    img: require('../../assets/demo/13.png'),
+//                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+//                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+//                  }
+//                ]
+//              });
+//              this.list = [
+//                {
+//                  img: require('../../assets/demo/13.png'),
+//                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
+//                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
+//                }
+//              ];
+//              this.banner = [
+//                {
+//                  img: require('../../assets/demo/1-1.jpg'),
+//                  title: ' 寻找旧时光——五一青岛小蜜月'
+//                }
+//              ];
+//            }
         },
         /**
          * 获取菜单数据
@@ -324,24 +347,12 @@
           var deferred = when.defer();
           this.$ajax.post(config.baseUrl + api.getArticles, {
             pageNo: pageNo,
-            pageSize: 10,
+            pageSize: 5,
             params: {
               articleTypeId: id ? id : ''
             }
           }).then((res) => {
-            //再對數據進行一次處理
-            const data = res.data.data;
-            const handle_arr  = [];
-            for(var i=0; i<data.length; i++) {
-              var handle = {};
-              handle['id'] = data[i].id;
-              handle['title'] = data[i].title;
-              handle['content'] = data[i].content;
-              handle['miniImgUrl'] = config.baseUrl + data[i].miniImgUrl;
-              handle_arr.push(handle);
-            }
-            this.list = this.list.concat(handle_arr);
-            deferred.resolve(handle_arr);
+            deferred.resolve(res);
           })
           return deferred.promise;
         },
@@ -358,15 +369,23 @@
                 break;
             case 1:
                 this.list = [];
+                this.childMenuHide = true;
+                this.$router.push({name: 'cultureListParams', params: {classId: parseInt(_link)}});
                 this.getCarouselPictures(parseInt(_link));
-                this.getArticleList(1, _link);
+                this.getArticleList(1, parseInt(_link)).then((res)=> {
+                    var data = res.data.data;
+                    if(data.length) {
+                      this.handleArticleListData(data);
+                    }
+                });
                 console.log("请求分类id");
                 break;
             case 2:
-                alert("直接跳转文章详情");
+                this.goToDetail(parseInt(_link));
+                console.log("直接跳转文章详情");
                 break;
             case 3:
-                alert("跳转外部链接");
+                console.log("跳转外部链接");
                 break;
           }
         },
@@ -376,17 +395,43 @@
          */
         goToDetail (articleTypeId) {
           this.$router.push( { name:'cultureDetail', params:{cultureId: articleTypeId}} );
+        },
+        handleArticleListData (data) {
+          //再對數據進行一次處理
+          const handle_arr = [];
+          for (var i = 0; i < data.length; i++) {
+            var handle = {};
+            handle['id'] = data[i].id;
+            handle['title'] = data[i].title;
+            handle['content'] = data[i].content;
+            handle['abstractContent'] = data[i].abstractContent;
+            handle['miniImgUrl'] = config.baseUrl + data[i].miniImgUrl;
+            handle_arr.push(handle);
+          }
+          this.list = this.list.concat(handle_arr);
         }
       },
       mounted() {
         this.pageNo = 1;
         this.getMenuData();
         if(this.$route.params.classId) {
-          this.getCarouselPictures(this.$route.params.classId);
-          this.getArticleList(1, this.$route.params.classId);
+          this.isHome = false;
+          this.getCarouselPictures(parseInt(this.$route.params.classId));
+          this.getArticleList(1, parseInt(this.$route.params.classId)).then((res)=> {
+              const data = res.data.data;
+              if(data.length) {
+                  this.handleArticleListData(data);
+              }
+          });
         }else {
+          this.isHome = true;
           this.getCarouselPictures();
-          this.getArticleList(1);
+          this.getArticleList(1).then((res)=>{
+            var data = res.data.data;
+            if(data.length) {
+              this.handleArticleListData(data);
+            }
+          });
         }
 //        setTimeout(function() {
 //          that.$store.commit('addCompanyClasses', {
@@ -400,13 +445,22 @@
         $route (to, from) {
           this.list = [];
           this.pageNo = 1;
-          console.log(to)
           var id = to.params.classId;
+          id ? this.isHome = false : this.isHome = true;
           this.getCarouselPictures(id);
-          this.getArticleList(1, id);
+          this.getArticleList(1, id).then((res)=>{
+             const data = res.data.data;
+             if(data.length) {
+               this.handleArticleListData(data);
+             }
+          });
+          this.$nextTick(() => {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+          });
+        },
+        childMenuHide (val) {
+//          console.log(val)
         }
-      },
-      directives: {
       },
       components: {
         Swiper,

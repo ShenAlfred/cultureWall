@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-model="isShow">
     <div class="class-i-i">
       <div class="ci" v-on:click="toggle($event, classList.id, classList.children.length)">
         <i v-if="classList.children.length" class="fa fa-bars"></i>
@@ -63,7 +63,7 @@
     color: #999;
   }
   .class-i-i .ci {
-    font-size: 12px;
+    font-size: 14px;
   }
   .class-item {
     height: 100%;
@@ -95,7 +95,8 @@
             }
         },
         props: [
-            'classList'
+            'classList',
+            'isShow'
         ],
         methods: {
           toggle(ev, id, isChild) {
@@ -108,11 +109,15 @@
           },
           hideMenu(ev, id) {
             document.body.scrollTop = 0;
-            this.isHide = !this.isHide;
+            this.isHide = true;
             this.$emit('UrlAndId', id);
           }
         },
-        mounted() {
-        }
+        watch: {
+          isShow (val) {
+            this.isHide = val;
+          }
+        },
+        mounted() {}
     }
 </script>
