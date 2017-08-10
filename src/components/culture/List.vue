@@ -206,6 +206,8 @@
         return {
           id: 'Home',
           pageNo: 1,
+          showLoading: true,
+          loadingText: '数据加载中',
           childMenuHide: false,                            //隐藏子菜单
           banner: [],
           list : [],
@@ -246,24 +248,6 @@
               this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
             }
           });
-//          setTimeout(() => {
-//            const temp = [];
-//            if(!this.temp.length) {
-//              this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
-//            }
-//            else {
-//              for (let i = 0; i <= this.temp.length; i++) {
-//                temp.push(this.temp[i])
-//              }
-//              this.list = this.list.concat(this.temp);
-//              var obj = {
-//                  id: this.id,
-//                  articles: this.temp
-//              }
-////              this.$store.commit('pushArticle', obj);
-//              this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-//            }
-//          }, 1000);
         },
         /**
          * 监听子菜单对应的ID
@@ -272,43 +256,6 @@
             this.id = data;
             this.list = [];
             this.$router.push({name: 'cultureListParams', params: {classId: data}});
-
-//            if(companyClasses[id]) {
-//                console.log("sadsa")
-//              this.list = companyClasses[id].articles;
-//              this.banner = companyClasses[id].banners;
-//            }else {
-//                console.log("沒有")
-//              this.$store.commit('addCompanyClasses', {
-//                id : id,
-//                banners: [
-//                  {
-//                    img: require('../../assets/demo/1-1.jpg'),
-//                    title: ' 寻找旧时光——五一青岛小蜜月'
-//                  }
-//                ],
-//                articles: [
-//                  {
-//                    img: require('../../assets/demo/13.png'),
-//                    title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-//                    content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-//                  }
-//                ]
-//              });
-//              this.list = [
-//                {
-//                  img: require('../../assets/demo/13.png'),
-//                  title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-//                  content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-//                }
-//              ];
-//              this.banner = [
-//                {
-//                  img: require('../../assets/demo/1-1.jpg'),
-//                  title: ' 寻找旧时光——五一青岛小蜜月'
-//                }
-//              ];
-//            }
         },
         /**
          * 获取菜单数据
@@ -414,6 +361,7 @@
       mounted() {
         this.pageNo = 1;
         this.getMenuData();
+        this.showLoading = true;
         if(this.$route.params.classId) {
           this.isHome = false;
           this.getCarouselPictures(parseInt(this.$route.params.classId));
@@ -433,13 +381,6 @@
             }
           });
         }
-//        setTimeout(function() {
-//          that.$store.commit('addCompanyClasses', {
-//            id : 22,
-//            banners: that.banner,
-//            articles: that.list
-//          });
-//        }, 1000);
       },
       watch: {
         $route (to, from) {
@@ -457,9 +398,6 @@
           this.$nextTick(() => {
             this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
           });
-        },
-        childMenuHide (val) {
-//          console.log(val)
         }
       },
       components: {
@@ -469,6 +407,6 @@
         FlexboxItem,
         ClassBlock,
         InfiniteLoading
-      },
+      }
     }
 </script>
