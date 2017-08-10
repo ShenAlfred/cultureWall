@@ -14,7 +14,6 @@ Vue.use(VueLazyLoad, {
   error: require('./assets/404.png')
 })
 
-
 Vue.prototype.$ajax = axios;
 
 //COOKIE凭据

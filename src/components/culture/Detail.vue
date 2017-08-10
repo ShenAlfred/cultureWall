@@ -44,6 +44,8 @@
     import config from '../../config';
     import api from '../../api';
     import util from '../../util';
+//    import '../../assets/lib/jquery'
+//    import '../../assets/lib/jquery.lazyload'
 
     export default {
       data () {
@@ -64,6 +66,17 @@
           handle['showCover'] = res.data.data.showCover;
           handle['updateTime'] = util.handleTime(res.data.data.updateTime, 'yyyy-MM-dd h:mm');
           this.detail = handle;
+//          this.$nextTick(()=>{
+//            var article = document.querySelector("#article"),
+//                images = article.querySelectorAll('img');
+//                $(images).each(function() {
+//                  if( !$(this).attr('data-original') ) {
+//                    $(this).attr("data-original", $(this).attr('src')).attr("src", '../../assets/loading-spin.svg');
+//                    $(this).attr('src', '');
+//                  }
+//                })
+//            $(images).lazyload();
+//          })
         });
       },
       components: {
