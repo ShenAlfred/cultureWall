@@ -10,7 +10,7 @@ import VueLazyLoad from 'vue-lazyload'
 Vue.use(VueLazyLoad, {
   preLoad: 1,
   attempt: 1,
-  loading: require('./assets/loading-spin.svg'),
+  loading: require('./assets/Double Ring.svg'),
   error: require('./assets/404.png')
 })
 
