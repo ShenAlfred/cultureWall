@@ -11,6 +11,7 @@
           <img :src="detail.coverImgUrl" />
         </div>
         <article id="article" v-html="detail.content"></article>
+        <back-home :show=true></back-home>
     </div>
 </template>
 <style scoped>
@@ -39,7 +40,7 @@
   }
 </style>
 <script>
-    import { Previewer, TransferDom } from 'vux';
+    import BackHome from './backHome.com.vue';
     import config from '../../config';
     import api from '../../api';
     import util from '../../util';
@@ -66,10 +67,7 @@
         });
       },
       components: {
-        Previewer
-      },
-      directives: {
-        TransferDom
+        BackHome
       }
     }
 </script>

@@ -57,29 +57,10 @@
           </flexbox-item>
         </flexbox>
       </div>
-      <div class="backHome" v-show="!isHome">
-        <router-link :to="{path: '/'}">
-          <i class="fa fa-home fa-2x"></i>
-        </router-link>
-      </div>
+      <back-home :show="!isHome"></back-home>
     </div>
 </template>
 <style scoped>
-  .backHome {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    background: #ff5454;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 62px;
-    color: #fff;
-    border-radius: 100%;
-  }
-  .backHome a {
-    color: #fff;
-  }
   .class-ctrl {
     position: fixed;
     bottom: 0;
@@ -194,9 +175,10 @@
 
 </style>
 <script>
-    import { Swiper, SwiperItem, Flexbox, FlexboxItem } from 'vux'
-    import ClassBlock from './classBlock.com.vue'
-    import when from 'when'
+    import { Swiper, SwiperItem, Flexbox, FlexboxItem } from 'vux';
+    import ClassBlock from './classBlock.com.vue';
+    import BackHome from './backHome.com.vue';
+    import when from 'when';
     import InfiniteLoading from 'vue-infinite-loading';
     import api from '../../api'
     import config from '../../config'
@@ -206,8 +188,6 @@
         return {
           id: 'Home',
           pageNo: 1,
-          showLoading: true,
-          loadingText: '数据加载中',
           childMenuHide: false,                            //隐藏子菜单
           banner: [],
           list : [],
@@ -406,7 +386,8 @@
         Flexbox,
         FlexboxItem,
         ClassBlock,
-        InfiniteLoading
+        InfiniteLoading,
+        BackHome
       }
     }
 </script>
