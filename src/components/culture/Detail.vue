@@ -39,6 +39,7 @@
   }
 </style>
 <script>
+    import { Previewer, TransferDom } from 'vux';
     import config from '../../config';
     import api from '../../api';
     import util from '../../util';
@@ -63,15 +64,12 @@
           handle['updateTime'] = util.handleTime(res.data.data.updateTime, 'yyyy-MM-dd h:mm');
           this.detail = handle;
         });
-        this.$nextTick(()=>{
-            var article = document.querySelector("#article");
-
-
-            setTimeout(function() {
-              var images = article.querySelectorAll('img');
-              console.log(images)
-            }, 2000)
-        })
+      },
+      components: {
+        Previewer
+      },
+      directives: {
+        TransferDom
       }
     }
 </script>

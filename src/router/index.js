@@ -11,7 +11,18 @@ const routes = [
       meta: {
         title: '文章列表',
       },
-      component: resolve => require(['@/components/culture/List'], resolve)
+      component: resolve => require(['@/components/culture/List'], resolve),
+      beforeEnter: (to, from, next) => {
+        if(typeof(applyId) == "undefined") {
+          next();
+        }else {
+          if(applyId) {
+            next({name: 'cultureDetail', params: {cultureId: applyId}})
+          }else {
+            next();
+          }
+        }
+      }
     },
     {
       path: '/:classId',
