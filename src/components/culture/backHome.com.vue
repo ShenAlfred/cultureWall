@@ -1,9 +1,7 @@
 <template>
   <div>
-    <div class="backHome" v-show="show">
-      <router-link :to="{path: '/'}">
-        <i class="fa fa-home fa-2x"></i>
-      </router-link>
+    <div class="backHome" v-show="show" v-on:click="backHome">
+      <i class="fa fa-home fa-2x"></i>
     </div>
   </div>
 </template>
@@ -32,6 +30,11 @@
             }
         },
         props: ['show'],
+        methods: {
+          backHome() {
+            window.location.href = "/culture/app"
+          }
+        },
         watch : {
           show (val) {
               console.log(val)

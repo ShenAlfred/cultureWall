@@ -170,23 +170,7 @@
           list : [],
           class_list: [],
           isHome: true,
-          temp: [
-            {
-              img: require('../../assets/demo/10.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/11.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-            {
-              img: require('../../assets/demo/12.jpeg'),
-              title: '千帆远澋|一夜摩登 住在香榭丽舍的繁华里3',
-              content: '全世界夜景最为璀璨的地方，我想巴黎当仁不让。巴黎的时尚和摩登，许多人趋之向往。她是塞纳河畔上流淌着的一场梦，无论是埃菲尔铁塔在高空黑夜里的傲然挺立'
-            },
-          ]
+          currentId: null                                  //当前点击的ID（特别是一级菜单）
         }
       },
       methods: {
@@ -210,15 +194,26 @@
          * 监听子菜单对应的ID
          */
         getClassId (data) {
-            this.id = data;
+          this.id = data;
+          if (!this.currentId) {
+            this.currentId = data;
             this.list = [];
             this.$router.push({name: 'cultureListParams', params: {classId: data}});
+          } else {
+            if (this.currentId == data) {
+              return;
+            } else {
+              this.currentId = data;
+              this.list = [];
+              this.$router.push({name: 'cultureListParams', params: {classId: data}});
+            }
+          }
         },
         /**
          * 获取菜单数据
          */
         getMenuData () {
-          this.$ajax.post(config.baseUrl + api.getArticleSort, {})
+          this.$ajax.get(config.baseUrl + api.getArticleSort, {})
             .then((res) => {
               this.class_list = res.data.data;
             })
@@ -227,8 +222,10 @@
          * 获取轮播图数据
          */
         getCarouselPictures (id) {
-          this.$ajax.post(config.baseUrl + api.getCarousel, {
-            articleTypeId: id ? id : ''
+          this.$ajax.get(config.baseUrl + api.getCarousel, {
+            params: {
+              articleTypeId: id ? id : ''
+            }
           }).then((res) => {
             //再对数据进行一层处理（主要处理图片的路径）
             const handle_arr = [];
@@ -249,10 +246,10 @@
          */
         getArticleList (pageNo, id) {
           var deferred = when.defer();
-          this.$ajax.post(config.baseUrl + api.getArticles, {
-            pageNo: pageNo,
-            pageSize: 5,
+          this.$ajax.get(config.baseUrl + api.getArticles, {
             params: {
+              pageNo: pageNo,
+              pageSize: 5,
               articleTypeId: id ? id : ''
             }
           }).then((res) => {
@@ -318,7 +315,6 @@
       mounted() {
         this.pageNo = 1;
         this.getMenuData();
-        this.showLoading = true;
         if(this.$route.params.classId) {
           this.isHome = false;
           this.getCarouselPictures(parseInt(this.$route.params.classId));

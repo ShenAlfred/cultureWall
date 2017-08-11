@@ -1,0 +1,159 @@
+1、获取菜单列表（文章列表）
+	访问地址：http://10.52.30.155:8080/culture/app/getArticleSort
+	参    数：无
+	请求方式：POST
+	请求结果：
+			{
+				"code": "0",
+				"msg": "操作成功",
+				"data": [
+					{
+						"id": 7,						// 菜单id
+						"name": "制度",    				// 菜单名称
+						"order": 1,						// 菜单显示顺序
+						"children": [					// 子分类数组
+							{
+								"id": 11,
+								"name": "不准4",
+								"order": 6,
+								"children": []			// 不用理会，只有两级菜单
+							},
+							{
+								"id": 12,
+								"name": "不准1",
+								"order": 3,
+								"children": []
+							}
+						]
+					},
+					{
+						"id": 8,
+						"name": "员工风采",
+						"order": 2,
+						"children": [
+							{
+								"id": 17,
+								"name": "风采1",
+								"order": 3,
+								"children": []
+							}
+						]
+					}
+				]
+			}
+
+2、获取轮播图
+	访问地址：http://10.52.30.155:8080/culture/app/getCarousel
+	参    数：
+			{
+				articleTypeId: 10				// 文章分类id，不穿值，则后台根据一定规则获取轮播图
+			}
+	请求方式：POST
+	请求结果：
+			{
+				"code": "0",
+				"msg": "操作成功",
+				"data": [
+					{
+						"id": 2,				// 图片id
+						"title": "sssxc",		// 图片标题
+						"linkType": 0,			// 链接类型，0：无，1：分类链接，2：文章链接，3：外部链接
+						"link": "",				// 根据linkType确定，linkType值，0：无用，1：分类的id，2：文章的id，3：外部链接（如：http://wwww.baidu.com）
+						"url": "/culture/resources/upload/carousel/7e2a1da0-0f66-4935-a69a-90fa84d0dd7e.jpg" 		// 图片的访问地址（请加上域名或ip端口信息）
+					},
+					{
+						"id": 4,
+						"title": "ttt",
+						"linkType": 0,
+						"link": "",
+						"url": "/culture/resources/upload/carousel/u=3683170992,2789766661&fm=11&gp=0.jpg"
+					},
+					{
+						"id": 5,
+						"title": "yyy",
+						"linkType": 0,
+						"link": "",
+						"url": "/culture/resources/upload/carousel/u=38047904,2449899632&fm=26&gp=0.jpg"
+					},
+					{
+						"id": 6,
+						"title": "yyy1",
+						"linkType": 0,
+						"link": "",
+						"url": "/culture/resources/upload/carousel/u=1443817543,4124882906&fm=26&gp=0.jpg"
+					},
+					{
+						"id": 7,
+						"title": "yyy12",
+						"linkType": 0,
+						"link": "",
+						"url": "/culture/resources/upload/carousel/u=1824448101,1598387002&fm=26&gp=0.jpg"
+					},
+					{
+						"id": 10,
+						"title": "sssppp",
+						"linkType": 0,
+						"link": "",
+						"url": "/culture/resources/upload/carousel/45c76afc-903a-4c53-a13e-563ab7c3a11e.jpg"
+					}
+				]
+			}
+			
+
+3、获取文章列表
+	访问地址：http://10.52.30.155:8080/culture/app/getArticles
+	参    数：
+			{
+				pageNo: 1,					// 要获取的分页
+				pageSize: 10,				// 每一页的获取多少数据
+				params: {
+					articleTypeId: 1		// 文章分类id，不传值，则获取推荐列表
+				}
+			}
+	请求方式：POST
+	请求结果：
+			{
+				"code": "0",
+				"msg": "操作成功",
+				"data": [
+					{
+						"id": 3,						// 文章id
+						"title": "tttt",				// 文章标题
+						"subTitle": "ttt",				// 副标题
+						"abstractContent": "tttt",		// 摘要
+						"updateTime": 1502098977000,	// 更新时间（时间戳）
+						"author": "ttt",				// 作者
+						"content": null,				// 内容，列表接口，此字段无数据
+						"coverImgUrl": "/culture/resources/upload/cover/1a128d23-b6d1-413d-80b5-1af722e96b3c.jpg",		// 封面图片（原图）
+						"miniImgUrl": "/culture/resources/upload/cover/mini/1a128d23-b6d1-413d-80b5-1af722e96b3c.jpg"	// 封面图片（缩略图）
+						"showCover": 1					// 是否显示封面图，0：不显示，1：显示，2：无封面图
+					}
+				]
+			}
+			
+			
+4、获取文章详情
+	访问地址：http://10.52.30.155:8080/culture/app/getArticleDetail
+	参    数：
+			{
+				articleId: 1, 						// 文章id
+			}
+	请求方式：POST
+	请求结果：
+			{
+				"code": "0",
+				"msg": "操作成功",
+				"data": {
+					"id": 3,						// 文章id
+					"title": "tttt",				// 文章标题
+					"subTitle": "ttt",				// 副标题
+					"showCover": 1,					// 是否显示封面图，0：不显示，1：显示，2：无封面图
+					"abstractContent": "tttt",		// 摘要
+					"updateTime": 1502098977000,	// 更新时间（时间戳）
+					"author": "ttt",				// 作者
+					"content": null,				// 内容，列表接口，此字段无数据
+					"coverImgUrl": "/culture/resources/upload/cover/1a128d23-b6d1-413d-80b5-1af722e96b3c.jpg",		// 封面图片（原图）
+					"miniImgUrl": "/culture/resources/upload/cover/mini/1a128d23-b6d1-413d-80b5-1af722e96b3c.jpg"	// 封面图片（缩略图）
+					"showCover": 1					// 是否显示封面图，0：不显示，1：显示，2：无封面图
+				}
+			}

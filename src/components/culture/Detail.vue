@@ -55,8 +55,10 @@
       },
       mounted () {
         const id = this.$route.params.cultureId;
-        this.$ajax.post(config.baseUrl + api.getArticleDetail, {
-          articleId: id
+        this.$ajax.get(config.baseUrl + api.getArticleDetail, {
+            params: {
+              articleId: id
+            }
         }).then((res) =>{
           var handle = {};
           handle['author'] = res.data.data.author;
