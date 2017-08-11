@@ -1,7 +1,7 @@
 <template>
     <div>
       <div v-if="banner.length">
-        <swiper :show-dots="true">
+        <swiper :show-dots="true" auto>
           <swiper-item v-for="item in banner" :key="item.id">
             <div class="custom-item" v-on:click="goTo(item.link, item.linkType)" v-if="item.linkType != 3">
               <img class="lazyload-image lg" v-lazy="item.url" />
