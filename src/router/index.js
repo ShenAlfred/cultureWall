@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import config from '@/config'
+import axios from 'axios'
+import util from '@/util'
 
 Vue.use(Router)
 
@@ -21,6 +23,19 @@ const routes = [
           }else {
             next();
           }
+        }
+        if(config.isDevEnv) {
+          const query = {
+            ticket: util.getUrlKey("ticket")
+          };
+          axios.get(config.baseUrl + "/culture/app", {
+            params: {
+              ticket: query.ticket
+            }
+          }).then((response) => {
+            next()
+          }).catch((response) => {
+          });
         }
       }
     },
