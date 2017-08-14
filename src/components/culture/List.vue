@@ -91,6 +91,7 @@
   .custom-item img {
     width: 100%;
     max-width: 100%;
+    height: 100%;
   }
   .custom-item p {
     position: absolute;
@@ -148,6 +149,9 @@
     width: 100px;
     height: 60px;
     overflow: hidden;
+  }
+  .art-img img {
+    height: 100%;
   }
 
 </style>
